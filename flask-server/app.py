@@ -153,6 +153,9 @@ class RandoroWorkout:
         )
         return detailed_table
 
+    def process_workout_sounds(self):
+        return {}
+
 @app.route('/')
 def index():
     return render_template('index.html', intervals=[])
@@ -162,15 +165,15 @@ def index():
 @app.route('/generate_random_intervals', methods=['POST'])
 def get_intervals():
     try:
-        w = 30
-        N = 3
-        r = 60
+        w = int(request.form['w'])
+        N = int(request.form['N'])
+        r = int(request.form['r'])
         t = int(request.form['t'])  # Total duration
         n = int(request.form['n'])  # Number of intervals
         d = int(request.form['d'])  # Minimum interval duration
-        c = 0
+        c = int(request.form['c'])
 
-        if t <= 0 or n <= 0 or d <= 0:
+        if N <= 0 or t <= 0 or n <= 0 or d <= 0:
             raise ValueError("Inputs must be positive integers.")
         if n * d > t:
             raise ValueError("The total duration must be >= n * d.")
