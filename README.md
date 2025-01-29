@@ -40,7 +40,7 @@ Randoro is a work-in-progress random interval timer designed to enhance training
     
     ```bash
     git clone https://github.com/diarmuidbrady/randoro-app.git
-    cd randoro
+    cd randoro/flask-server
     ```
     
 2. Set up a virtual environment and install dependencies:
@@ -54,7 +54,7 @@ Randoro is a work-in-progress random interval timer designed to enhance training
 3. Start the Flask server:
     
     ```bash
-    flask run
+    python app.py
     ```
     
 4. Open your browser and navigate to `http://127.0.0.1:5000`.
@@ -62,7 +62,8 @@ Randoro is a work-in-progress random interval timer designed to enhance training
 ### Generating Random Intervals:
 
 1. Enter the total duration, number of intervals, and minimum interval duration.
-2. Press "Generate" to see the intervals and activate the auditory beep system.
+2. Press "Generate" to see the intervals.
+3. Press "Start" to activate the auditory beep system.
 
 ## Roadmap
 
