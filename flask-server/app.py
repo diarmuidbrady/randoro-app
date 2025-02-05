@@ -154,7 +154,30 @@ class RandoroWorkout:
         return detailed_table
 
     def process_workout_sounds(self):
-        return {}
+        # initialise sounds
+        self.sounds = []
+        self.intervals = []
+
+        # add the warmup phase
+        if self.workout['warmup'][-1] > 0:
+            self.intervals.append(self.workout['warmup'][0])
+            self.sounds.append('ready')
+        
+        # add the main phase
+        for i, round in enumerate(self.workout['rounds']):
+            self.intervals+=round
+            self.sounds.append('go')
+            self.sounds+=(['bell']*(len(round)-2))
+            self.sounds.append('rest')
+
+        if (self.workout['cooldown'][-1] - self.workout['cooldown'][0]) > 0:
+            self.intervals+=self.workout['cooldown']
+            self.sounds+=['relax', 'complete']
+        else:
+            self.intervals.append(self.workout['cooldown'][0])
+            self.sounds.append('complete')
+        
+        return self.intervals, self.sounds
 
 @app.route('/')
 def index():
@@ -179,8 +202,9 @@ def get_intervals():
             raise ValueError("The total duration must be >= n * d.")
 
         randoro = RandoroWorkout(w, N, r, t, n, d, c)
-        intervals = randoro.generate_randoro_intervals(t, n, d)
-        return render_template('index.html', intervals=intervals)
+        workout = randoro.generate_randoro_workout()
+        intervals, sounds = randoro.process_workout_sounds()
+        return render_template('index.html', intervals=intervals, sounds=sounds)
 
     except ValueError as e:
         return render_template('index.html', error=str(e))

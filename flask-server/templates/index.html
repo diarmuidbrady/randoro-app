@@ -51,32 +51,53 @@
 
     {% if intervals %}
         <h2>Generated Intervals</h2>
-        <ul>
-            {% for interval in intervals %}
-                <li>{{ interval }}</li>
+        <ol>
+            {% for i in range(intervals|length) %}
+                <li>{{ intervals[i] | round(1) }} - {{ sounds[i] }}</li>
             {% endfor %}
-        </ul>
+        </ol>
 
         <!-- Start Button -->
         <button id="start-button">Start</button>
 
         <!-- Audio Element for the Beep -->
-        <audio id="beep-sound" src="/static/bell.mp3" preload="auto"></audio>
+        <audio id="ready" src="/static/ready.mp3" preload="auto"></audio>
+        <audio id="go" src="/static/go.mp3" preload="auto"></audio>
+        <audio id="bell" src="/static/bell.mp3" preload="auto"></audio>
+        <audio id="rest" src="/static/rest.mp3" preload="auto"></audio>
+        <audio id="relax" src="/static/relax.mp3" preload="auto"></audio>
+        <audio id="complete" src="/static/complete.mp3" preload="auto"></audio>
     {% endif %}
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const startButton = document.getElementById("start-button");
-            const beepSound = document.getElementById("beep-sound");
+
+            // Get the intervals and sounds from Jinja
             const beepIntervals = {{ intervals }};
+            const beepSounds = {{ sounds | tojson }};
+
+            // Mapping of sound names to their respective audio elements
+            const soundMap = {
+                "ready": document.getElementById("ready"),
+                "go": document.getElementById("go"),
+                "bell": document.getElementById("bell"),
+                "rest": document.getElementById("rest"),
+                "relax": document.getElementById("relax"),
+                "complete": document.getElementById("complete")
+            };
 
             // Event listener for the start button
             startButton?.addEventListener("click", () => {
                 if (beepIntervals && beepIntervals.length > 0) {
                     startButton.disabled = true;
+
                     beepIntervals.forEach((interval, index) => {
                         setTimeout(() => {
-                            beepSound.play(); // Play the beep
+                            const soundKey = beepSounds[index]; // Get the sound name (e.g., "go", "bell")
+                            if (soundKey in soundMap) {
+                                soundMap[soundKey].play(); // Play the corresponding sound
+                            }
                         }, interval * 1000); // Convert seconds to milliseconds
                     });
                 }
