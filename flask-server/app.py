@@ -181,7 +181,7 @@ class RandoroWorkout:
 
 @app.route('/')
 def index():
-    return render_template('index.html', intervals=[])
+    return render_template('index.html', intervals=[], sounds=[])
 
 
 # Process Input and Generate Intervals
@@ -211,4 +211,4 @@ def get_intervals():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

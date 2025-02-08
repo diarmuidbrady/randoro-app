@@ -66,7 +66,7 @@
         <audio id="bell" src="/static/bell.mp3" preload="auto"></audio>
         <audio id="rest" src="/static/rest.mp3" preload="auto"></audio>
         <audio id="relax" src="/static/relax.mp3" preload="auto"></audio>
-        <audio id="complete" src="/static/complete.mp3" preload="auto"></audio>
+        <audio id="complete" src="/static/stop.mp3" preload="auto"></audio>
     {% endif %}
 
     <script>
@@ -96,6 +96,8 @@
                         setTimeout(() => {
                             const soundKey = beepSounds[index]; // Get the sound name (e.g., "go", "bell")
                             if (soundKey in soundMap) {
+                                console.log(`Playing sound: ${beepSounds[index]} at interval: ${interval}`);
+                                soundMap[soundKey].load(); // Load the sound for mobile browser
                                 soundMap[soundKey].play(); // Play the corresponding sound
                             }
                         }, interval * 1000); // Convert seconds to milliseconds
